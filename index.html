@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>动物塑人格测试（终极版）</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <style>
 body{
   font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
@@ -71,7 +70,6 @@ canvas{
   <h2 id="animalName"></h2>
   <canvas id="radarChart"></canvas>
   <div id="analysis"></div>
-  <button id="downloadBtn">下载PDF报告</button>
 </div>
 
 <script>
@@ -123,9 +121,31 @@ const animalTheme={
 
 // -------------------- 全组合分析文本 --------------------
 const comboAnalysis={
-"虎-虎":"<div class='analysis-section'><h3>穿搭</h3><p>虎型主导，偏向硬挺结构服装和强烈颜色搭配...</p></div>...（此处可扩展五维分析）",
-"虎-狼":"<div class='analysis-section'><h3>穿搭</h3><p>主导+冷静风格，适合有条理的色彩搭配...</p></div>...",
-// 你可以把之前提供的 comboAnalysis 全部填入
+"虎-虎":"<div class='analysis-section'><h3>虎+虎</h3><p>主导型力量感十足，做事果断，穿搭偏向硬挺结构和红黑色系，适合高强度挑战环境。</p></div>",
+"虎-狼":"<div class='analysis-section'><h3>虎+狼</h3><p>主导+策略型，冷静而果敢，穿搭简约又有力量感，擅长规划和执行。</p></div>",
+"虎-豹":"<div class='analysis-section'><h3>虎+豹</h3><p>强势+性感，行动利落又带魅力，适合引人注意的场合，穿搭曲线与结构兼顾。</p></div>",
+"虎-狐":"<div class='analysis-section'><h3>虎+狐</h3><p>主导型中带灵动，富创意，穿搭轻快有层次，适合创新型挑战。</p></div>",
+"虎-熊":"<div class='analysis-section'><h3>虎+熊</h3><p>强势中稳重，适合守护型领导，穿搭厚重大地色系，注重安全感。</p></div>",
+"狼-虎":"<div class='analysis-section'><h3>狼+虎</h3><p>策略中带果敢，冷静判断，执行力强，适合团队管理，穿搭利落简洁。</p></div>",
+"狼-狼":"<div class='analysis-section'><h3>狼+狼</h3><p>高控制力，条理分明，穿搭黑白灰为主，注重效率和计划性。</p></div>",
+"狼-豹":"<div class='analysis-section'><h3>狼+豹</h3><p>策略+魅力，优雅而理智，适合社交与职场兼顾，穿搭金属与线条结合。</p></div>",
+"狼-狐":"<div class='analysis-section'><h3>狼+狐</h3><p>冷静+灵活，善于适应变化，穿搭层次分明，注重创新与效率。</p></div>",
+"狼-熊":"<div class='analysis-section'><h3>狼+熊</h3><p>控制+稳重，沉稳而有安全感，穿搭大地色简约，注重可靠性。</p></div>",
+"豹-虎":"<div class='analysis-section'><h3>豹+虎</h3><p>性感+果敢，魅力与力量并重，穿搭曲线与红黑结合，擅长引人注意。</p></div>",
+"豹-狼":"<div class='analysis-section'><h3>豹+狼</h3><p>魅力+策略，优雅而精准，穿搭金属色系，擅长协调与社交。</p></div>",
+"豹-豹":"<div class='analysis-section'><h3>豹+豹</h3><p>性感与敏捷兼具，擅长吸引他人注意，穿搭贴身曲线，个性突出。</p></div>",
+"豹-狐":"<div class='analysis-section'><h3>豹+狐</h3><p>魅力+灵动，创意十足，穿搭轻快有层次，适合艺术创作或展示场合。</p></div>",
+"豹-熊":"<div class='analysis-section'><h3>豹+熊</h3><p>性感中带稳重，个性柔和且有安全感，穿搭大地色系，平衡魅力与可靠性。</p></div>",
+"狐-虎":"<div class='analysis-section'><h3>狐+虎</h3><p>灵动+果敢，创新力强，穿搭轻快有层次，适合新项目与冒险。</p></div>",
+"狐-狼":"<div class='analysis-section'><h3>狐+狼</h3><p>灵动+策略，适应力强，穿搭条理分明，擅长应变与组织。</p></div>",
+"狐-豹":"<div class='analysis-section'><h3>狐+豹</h3><p>灵动+性感，创意与魅力并存，穿搭轻盈曲线，擅长社交与艺术活动。</p></div>",
+"狐-狐":"<div class='analysis-section'><h3>狐+狐</h3><p>灵活且富创造力，穿搭层次分明，适合自由职业或创新领域。</p></div>",
+"狐-熊":"<div class='analysis-section'><h3>狐+熊</h3><p>灵动+稳重，富安全感且不失创意，穿搭大地色与轻快层次结合。</p></div>",
+"熊-虎":"<div class='analysis-section'><h3>熊+虎</h3><p>稳重+果敢，守护力强，穿搭厚重大地色，适合管理与照护角色。</p></div>",
+"熊-狼":"<div class='analysis-section'><h3>熊+狼</h3><p>稳重+策略，沉稳可靠，穿搭简约大地色，适合执行与计划。</p></div>",
+"熊-豹":"<div class='analysis-section'><h3>熊+豹</h3><p>稳重+魅力，安全感与吸引力兼具，穿搭厚重与曲线结合。</p></div>",
+"熊-狐":"<div class='analysis-section'><h3>熊+狐</h3><p>稳重+灵动，安全感中富有创意，穿搭大地色系搭配轻快层次。</p></div>",
+"熊-熊":"<div class='analysis-section'><h3>熊+熊</h3><p>稳重且厚实，守护与安全感满分，穿搭大地色宽松舒适，适合安稳生活。</p></div>"
 };
 
 // -------------------- 计算结果 --------------------
@@ -152,56 +172,5 @@ function calculate(){
 }
 
 // -------------------- 雷达图 --------------------
-function renderChart(main,sub){
-  const ctx=document.getElementById("radarChart");
-  new Chart(ctx,{
-    type:'radar',
-    data:{
-      labels:["力量感","冷感度","攻击性","柔韧度","野性度"],
-      datasets:[
-        {label:main,data:getData(main),backgroundColor:animalTheme[main].color+"33",borderColor:animalTheme[main].color,borderWidth:2},
-        {label:sub,data:getData(sub),backgroundColor:animalTheme[sub].color+"33",borderColor:animalTheme[sub].color,borderWidth:2}
-      ]
-    },
-    options:{responsive:true,maintainAspectRatio:true,scales:{r:{beginAtZero:true,max:5}}}
-  });
-}
+function renderChart
 
-function getData(type){
-  const map={虎:[5,3,5,2,4],狼:[4,5,4,2,3],豹:[3,4,3,4,5],狐:[2,3,2,5,4],熊:[5,2,3,3,2]};
-  return map[type];
-}
-
-// -------------------- PDF 导出 --------------------
-function downloadPDF(){
-  const { jsPDF } = window.jspdf;
-  let doc = new jsPDF('p','pt','a4');
-  doc.setFont("helvetica","normal");
-  let y=40;
-  doc.setFontSize(20);
-  doc.text("动物塑人格测试报告",40,y);
-  y+=30;
-  doc.setFontSize(16);
-  doc.text(document.getElementById("animalName").innerText,40,y);
-  y+=25;
-
-  const analysis=document.getElementById("analysis").innerHTML;
-  const tempDiv=document.createElement("div");
-  tempDiv.innerHTML=analysis;
-  const paragraphs=tempDiv.querySelectorAll("p,h3");
-  paragraphs.forEach(p=>{
-    let text=p.innerText;
-    doc.setFontSize(p.tagName=="H3"?14:12);
-    doc.text(text,40,y,{maxWidth:520});
-    y+=p.tagName=="H3"?20:40;
-    if(y>750){doc.addPage();y=40;}
-  });
-  doc.save("动物塑人格测试报告.pdf");
-}
-
-// -------------------- 事件绑定 --------------------
-document.getElementById("submitBtn").addEventListener("click", calculate);
-document.getElementById("downloadBtn").addEventListener("click", downloadPDF);
-</script>
-</body>
-</html>
